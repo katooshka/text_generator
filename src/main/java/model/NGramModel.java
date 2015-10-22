@@ -11,14 +11,18 @@ public class NGramModel {
     private List<List<String>> possibleSequences = new ArrayList<>();
     private Random random = new Random();
 
+    // Function<String, String>
     public void add(List<String> previousWords, String nextWord) {
         List<String> normalizedPreviousWords = normalizeList(previousWords);
         if (!map.containsKey(normalizedPreviousWords)) {
-            map.put(normalizedPreviousWords, new ArrayList<String>());  // разобраться почему надо копировать
+            map.put(normalizedPreviousWords, new ArrayList<>());  // разобраться почему надо копировать
         }
         map.get(previousWords).add(nextWord);
-        List<String> previousWordsCopy = new ArrayList<>(previousWords);  // разобраться как не делать двойных копий
-        possibleSequences.add(previousWordsCopy);
+        if (isWordTerminating(previousWords.get(0))) {
+            List<String> possibleSequence = new ArrayList<>(previousWords.subList(1, previousWords.size()));
+            possibleSequence.add(nextWord);
+            possibleSequences.add(possibleSequence);
+        }
     }
 
     public String generateNextWord(List<String> previousWords) {
@@ -45,5 +49,9 @@ public class NGramModel {
 
     private String normalize(String word) {
         return word.toLowerCase();
+    }
+
+    private boolean isWordTerminating (String word){
+        return word.endsWith(".");
     }
 }
