@@ -5,8 +5,9 @@ import model.NGramModel;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.text.ParseException;
 import java.util.List;
+import java.util.function.Function;
+import java.util.function.Predicate;
 
 import static main.TextGenerator.createNGramModelFromFile;
 import static main.TextGenerator.generateText;
@@ -21,7 +22,6 @@ public class Main {
     //TODO: list of words -> map from word to count; as consequence ModelBuilder
 
     //TODO: end on a sentence
-    //TODO: move out normalize() from NGramModel
     //TODO: add order verification to NGramModel
     //TODO: move out a generator class
     //TODO: try different text
@@ -32,7 +32,9 @@ public class Main {
             return;
         }
 
-        NGramModel model = createNGramModelFromFile(options.filename, options.order);
+        Predicate<String> sentenceEndPredicate = (word) -> word.endsWith(".");
+        Function<String, String> normalizer = String::toLowerCase;
+        NGramModel model = createNGramModelFromFile(options.filename, options.order, sentenceEndPredicate, normalizer);
         List<String> text = generateText(options.wordCount, model);
         for (String word : text) {
             System.out.print(word + " ");

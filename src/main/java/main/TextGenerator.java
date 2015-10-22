@@ -6,6 +6,8 @@ import model.WordsSplitter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Function;
+import java.util.function.Predicate;
 
 /**
  * Author: katooshka
@@ -14,9 +16,11 @@ import java.util.List;
 
 public class TextGenerator {
 
-    public static NGramModel createNGramModelFromFile(String filename, int order) throws IOException {
+    public static NGramModel createNGramModelFromFile(String filename, int order,
+                                                      Predicate<String> sentenceEndPredicate,
+                                                      Function<String, String> normalizer) throws IOException {
         List<String> words = WordsSplitter.splitToWords(filename);
-        NGramModel model = new NGramModel();
+        NGramModel model = new NGramModel(sentenceEndPredicate, normalizer);
         List<String> previousWords = new ArrayList<>();
         for (String currentWord : words) {
             if (previousWords.size() == order) {
