@@ -44,7 +44,7 @@ public class NGramModel {
         if (!map.containsKey(normalizedPreviousWords)) {
             map.put(normalizedPreviousWords, new ArrayList<>());
         }
-        map.get(previousWords).add(nextWord);
+        map.get(normalizedPreviousWords).add(nextWord);
         if (sentenceEndPredicate.test(previousWords.get(0))) {
             List<String> possibleSequence =
                     new ArrayList<>(previousWords.subList(1, previousWords.size()));
@@ -78,8 +78,7 @@ public class NGramModel {
     private List<String> normalizeList(List<String> previousWords) {
         List<String> normalizedPreviousWords = new ArrayList<>();
         for (String previousWord : previousWords) {
-            normalizer.apply(previousWord);
-            normalizedPreviousWords.add(previousWord);
+            normalizedPreviousWords.add(normalizer.apply(previousWord));
         }
         return normalizedPreviousWords;
     }
