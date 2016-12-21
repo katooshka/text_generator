@@ -12,11 +12,6 @@ import java.util.function.Predicate;
 import static main.TextGenerator.createNGramModelFromFile;
 import static main.TextGenerator.generateText;
 
-
-/**
- * Author: katooshka
- * Date: 10/20/15.
- */
 public class Main {
     //TODO: not to read all the text file at one moment
     //TODO: list of words -> map from word to count; as consequence ModelBuilder
@@ -26,6 +21,9 @@ public class Main {
     //TODO: move out a generator class
     //TODO: try different text
 
+    /**
+     * Creates new NGramModel, generates text and prints it.
+     */
     public static void main(String[] args) throws IOException {
         Options options = readOptions(args);
         if (options == null) {
@@ -41,6 +39,9 @@ public class Main {
         }
     }
 
+    /**
+     * Parses given arguments. Outputs information about possible errors
+     */
     private static Options readOptions(String[] args) {
         if (args.length != 3) {
             showUsage();
@@ -64,8 +65,17 @@ public class Main {
     }
 
     private static class Options {
+        /**
+         * Path to the base text
+         */
         String filename;
+        /**
+         * Number of words used to generate a next word
+         */
         int order;
+        /**
+         * Generated text length
+         */
         int wordCount;
     }
 
